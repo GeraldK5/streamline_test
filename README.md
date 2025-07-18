@@ -1,24 +1,32 @@
-# 📅 Streamline Appointments
+📥 Download the App
+You can download the app using the link below:
 
-**Streamline** is a Flutter-based appointment booking application that allows users to:
+👉 Download App
+https://drive.google.com/file/d/1EX-_56HSJyQLXmKTKltf96pi0xN0Ly-6/view?usp=drive_link
 
-- Book appointments with custom details (name, email, date, time)
-- View all scheduled appointments
-- Edit or cancel existing appointments
-- Add booked appointments to the device's **native calendar**
-- Receive visual confirmations and helpful animations
+📅 Appointments App
+Streamline is a Flutter-based appointment booking application that allows users to:
 
----
+Book appointments with custom details (name, email, date, time)
 
-## ✨ Features
+View all scheduled appointments
 
-- 📆 **Calendar Integration** – View available dates and select a time slot
-- 📝 **Edit & Cancel** – Modify or remove an appointment at any time
-- ✅ **Lottie Success Animation** – Smooth feedback when booking is complete
-- 📱 **Local Data Storage** – All appointments are stored on the device
-- 📤 **Add to Native Calendar** – Seamlessly push events to the device calendar
+Edit or cancel existing appointments
 
----
+Add booked appointments to the device's native calendar
+
+Receive visual confirmations and helpful animations
+
+✨ Features
+📆 Calendar Integration – View available dates and select a time slot
+
+📝 Edit & Cancel – Modify or remove an appointment at any time
+
+✅ Lottie Success Animation – Smooth feedback when booking is complete
+
+📱 Local Data Storage – All appointments are stored on the device
+
+📤 Add to Native Calendar – Seamlessly push events to the device calendar
 
 📦 Packages Used
 shared_preferences (v^2.5.3)
@@ -38,8 +46,3 @@ Enables beautiful Lottie animations, often used for success or loading screens.
 
 flutter_animate (v^4.5.2)
 Makes it easy to add smooth and expressive animations to Flutter widgets.
-
----
-
-## 📁 Project Structure
-
