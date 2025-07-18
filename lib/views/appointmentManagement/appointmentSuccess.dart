@@ -5,10 +5,8 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:streamline_test/views/main/homeScreen.dart';
 import 'package:streamline_test/views/widgets/color_schemes.dart';
 import 'package:streamline_test/models/Appointment.dart';
-import 'package:device_calendar/device_calendar.dart';
-import 'package:permission_handler/permission_handler.dart';
 
-class AppointmentSuccessPage extends StatefulWidget {
+class AppointmentSuccessPage extends StatelessWidget {
   final Appointment appointment;
 
   const AppointmentSuccessPage({
@@ -16,11 +14,6 @@ class AppointmentSuccessPage extends StatefulWidget {
     required this.appointment,
   }) : super(key: key);
 
-  @override
-  State<AppointmentSuccessPage> createState() => _AppointmentSuccessPageState();
-}
-
-class _AppointmentSuccessPageState extends State<AppointmentSuccessPage> {
   String formatDateTime(DateTime date, String timeString) {
     try {
       final dateTime = DateTime.parse(
@@ -33,74 +26,10 @@ class _AppointmentSuccessPageState extends State<AppointmentSuccessPage> {
     }
   }
 
-  final DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
-
-  Future<bool> _requestCalendarPermission() async {
-    final status = await Permission.calendar.request();
-    return status.isGranted;
-  }
-
-  Future<void> _addToDeviceCalendar(BuildContext context) async {
-    final hasPermission = await _requestCalendarPermission();
-    if (!hasPermission) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Calendar permission denied")),
-      );
-      return;
-    }
-
-    final calendarsResult = await _deviceCalendarPlugin.retrieveCalendars();
-    final calendar =
-        calendarsResult.data?.firstWhere((cal) => cal.isDefault ?? true);
-
-    if (calendar == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("No default calendar found")),
-      );
-      return;
-    }
-
-    // Parse the time slot
-    try {
-      final dateStr = DateFormat('yyyy-MM-dd').format(appointment.date);
-      final startTime = DateTime.parse(
-          '$dateStr ${appointment.selectedTimeSlot.split('-')[0]}');
-      final endTime = DateTime.parse(
-          '$dateStr ${appointment.selectedTimeSlot.split('-')[1]}');
-
-      final event = Event(
-        calendar.id,
-        title:
-            'Appointment with ${appointment.firstName} ${appointment.lastName}',
-        description: 'Email: ${appointment.email}, Phone: ${appointment.phone}',
-        start: startTime,
-        end: endTime,
-      );
-
-      final result = await _deviceCalendarPlugin.createOrUpdateEvent(event);
-
-      if (result.isSuccess && result.data?.isNotEmpty == true) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Appointment added to calendar")),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-              content: Text("Failed to add appointment to calendar")),
-        );
-      }
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Error: ${e.toString()}")),
-      );
-    }
-  }
-
-
   @override
   Widget build(BuildContext context) {
     final formattedDateTime =
-        formatDateTime(widget.appointment.date, widget.appointment.selectedTimeSlot);
+        formatDateTime(appointment.date, appointment.selectedTimeSlot);
 
     final lottieAnimation = Lottie.asset(
       'assets/animations/success.json',
@@ -119,7 +48,7 @@ class _AppointmentSuccessPageState extends State<AppointmentSuccessPage> {
     );
 
     final requestConfirmation = Text(
-      'Your appointment for ${widget.appointment.firstName} ${widget.appointment.lastName} has been successfully scheduled.',
+      'Your appointment for ${appointment.firstName} ${appointment.lastName} has been successfully scheduled.',
       textAlign: TextAlign.center,
       style: const TextStyle(
         color: Colors.white,
@@ -330,15 +259,6 @@ class _AppointmentSuccessPageState extends State<AppointmentSuccessPage> {
               ),
             ],
           ),
-        ),
-      ),
-       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _addToDeviceCalendar(context),
-        backgroundColor: AppColors.primaryGreen,
-        icon: const Icon(Icons.calendar_today, color: Colors.white),
-        label: const Text(
-          'Add to Calendar',
-          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
       ),
     );
